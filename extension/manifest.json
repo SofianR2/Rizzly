@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Rizzly",
+  "version": "1.0",
+  "description": "AI-powered message suggestions for dating apps",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.PNG",
+      "48": "icons/icon48.PNG",
+      "128": "icons/icon128.PNG"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.tinder.com/*", "*://*.bumble.com/*", "*://*.hinge.co/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.PNG",
+    "48": "icons/icon48.PNG",
+    "128": "icons/icon128.PNG"
+  }
+} 

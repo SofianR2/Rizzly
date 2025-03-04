@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rizzly</title>
+  <style>
+    body {
+      width: 350px;
+      padding: 15px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .chat-preview {
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+    .suggestion {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .suggestion:hover {
+      background: #bbdefb;
+    }
+    .loading {
+      text-align: center;
+      color: #666;
+    }
+    .error {
+      color: #d32f2f;
+      padding: 10px;
+      background: #ffebee;
+      border-radius: 8px;
+    }
+    button {
+      background: #2196f3;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #1976d2;
+    }
+    button:disabled {
+      background: #bdbdbd;
+      cursor: not-allowed;
+    }
+    .user-message {
+      background: #e3f2fd;
+      padding: 8px;
+      border-radius: 8px;
+      margin: 4px 0;
+      align-self: flex-end;
+      max-width: 80%;
+    }
+    .match-message {
+      background: #f5f5f5;
+      padding: 8px;
+      border-radius: 8px;
+      margin: 4px 0;
+      align-self: flex-start;
+      max-width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Rizzly</h2>
+    <div class="chat-preview" id="chatPreview">
+      <!-- Chat messages will be displayed here -->
+    </div>
+    <div id="suggestions">
+      <!-- Suggestions will be displayed here -->
+    </div>
+    <div id="loading" class="loading" style="display: none;">
+      Generating suggestions...
+    </div>
+    <div id="error" class="error" style="display: none;">
+      <!-- Error messages will be displayed here -->
+    </div>
+    <button id="generateBtn">Generate Suggestions</button>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 

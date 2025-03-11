@@ -4,42 +4,33 @@ function extractMessages() {
     const currentUrl = window.location.hostname;
 
     if (currentUrl.includes('tinder.com')) {
-        // Tinder message extraction
-        const messageContainer = document.querySelector('[data-message-list]');
+        // Tinder message extraction using updated selectors
+        const messageContainer = document.querySelector('[role="log"]');
         if (messageContainer) {
-            const messageElements = messageContainer.querySelectorAll('[data-message]');
-            messageElements.forEach(msg => {
-                const isOwn = msg.classList.contains('own');
-                messages.push({
-                    text: msg.textContent.trim(),
-                    sender: isOwn ? 'user' : 'match',
-                    timestamp: msg.getAttribute('data-time') || new Date().toISOString()
-                });
+            // Find all helper elements that contain a timestamp and a message bubble
+            const messageHelpers = messageContainer.querySelectorAll('div.msgHelper');
+            messageHelpers.forEach(helper => {
+                // Get the timestamp from the <time> element (if available)
+                const timeElem = helper.querySelector('time');
+                const timestamp = timeElem ? timeElem.getAttribute('datetime') : new Date().toISOString();
+
+                // Get the message bubble containing the text
+                const bubble = helper.querySelector('div.msg');
+                if (bubble) {
+                    const textElem = bubble.querySelector('span.text');
+                    if (textElem) {
+                        const text = textElem.textContent.trim();
+                        // Use class names to decide who sent the message:
+                        // If the bubble contains "msg--received", assume it's from the match; otherwise, it's from the user.
+                        const sender = bubble.className.includes('msg--received') ? 'match' : 'user';
+                        messages.push({ text, sender, timestamp });
+                    }
+                }
             });
         }
-    } else if (currentUrl.includes('bumble.com')) {
-        // Bumble message extraction
-        const messageElements = document.querySelectorAll('.message-wrapper');
-        messageElements.forEach(msg => {
-            const isOwn = msg.classList.contains('message--outgoing');
-            messages.push({
-                text: msg.querySelector('.message__text')?.textContent.trim(),
-                sender: isOwn ? 'user' : 'match',
-                timestamp: msg.querySelector('.message__time')?.textContent || new Date().toISOString()
-            });
-        });
-    } else if (currentUrl.includes('hinge.co')) {
-        // Hinge message extraction
-        const messageElements = document.querySelectorAll('.message-item');
-        messageElements.forEach(msg => {
-            const isOwn = msg.classList.contains('sent');
-            messages.push({
-                text: msg.querySelector('.message-content')?.textContent.trim(),
-                sender: isOwn ? 'user' : 'match',
-                timestamp: msg.querySelector('.message-time')?.textContent || new Date().toISOString()
-            });
-        });
-    }
+    } 
+
+    // You can add extraction logic for other dating apps here
 
     return messages;
 }
@@ -72,7 +63,8 @@ function startObserving() {
     let chatContainer;
 
     if (currentUrl.includes('tinder.com')) {
-        chatContainer = document.querySelector('[data-message-list]');
+        // Use the updated selector for Tinder
+        chatContainer = document.querySelector('[role="log"]');
     } else if (currentUrl.includes('bumble.com')) {
         chatContainer = document.querySelector('.messages-container');
     } else if (currentUrl.includes('hinge.co')) {
@@ -88,4 +80,4 @@ function startObserving() {
 }
 
 // Initialize observation when the page loads
-startObserving(); 
+startObserving();

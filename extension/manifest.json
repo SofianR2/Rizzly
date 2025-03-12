@@ -6,7 +6,15 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "storage"
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "*://*.tinder.com/*",
+    "*://*.bumble.com/*",
+    "*://*.hinge.co/*",
+    "*://*.discord.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -18,7 +26,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.tinder.com/*", "*://*.bumble.com/*", "*://*.hinge.co/*"],
+      "matches": ["*://*.tinder.com/*", "*://*.bumble.com/*", "*://*.hinge.co/*", "*://*.discord.com/*"],
       "js": ["content.js"]
     }
   ],

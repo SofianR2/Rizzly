@@ -2,50 +2,50 @@
 function extractMessages() {
     const messages = [];
     const currentUrl = window.location.hostname;
-  
-    // Tinder extraction
-    if (currentUrl.includes('tinder.com')) {
-      const messageContainer = document.querySelector('[role="log"]');
-      if (messageContainer) {
-        const messageHelpers = messageContainer.querySelectorAll('div.msgHelper');
-        messageHelpers.forEach(helper => {
-          const timeElem = helper.querySelector('time');
-          const timestamp = timeElem ? timeElem.getAttribute('datetime') : new Date().toISOString();
-          const bubble = helper.querySelector('div.msg');
-          if (bubble) {
-            const textElem = bubble.querySelector('span.text');
-            if (textElem) {
-              const text = textElem.textContent.trim();
-              // If the bubble's class includes "msg--received", it's from your match.
-              const sender = bubble.className.includes('msg--received') ? 'match' : 'user';
-              messages.push({ text, sender, timestamp });
-            }
-          }
-        });
-      }
+
+    // Discord extraction
+    if (currentUrl.includes('discord.com')) {
+      const messageElements = document.querySelectorAll('.messageListItem__5126c');
+      messageElements.forEach(msg => {
+        const contentElement = msg.querySelector('.markup__75297.messageContent_c19a55');
+        const usernameElement = msg.querySelector('.username_c19a55');
+        const timestampElement = msg.querySelector('time');
+        
+        if (contentElement && usernameElement) {
+          const text = contentElement.textContent.trim();
+          const username = usernameElement.textContent.trim();
+          const timestamp = timestampElement ? timestampElement.getAttribute('datetime') : new Date().toISOString();
+          
+          // Get the currently logged-in user's username for comparison
+          const currentUsername = document.querySelector('.username_c19a55')?.textContent.trim();
+          const isCurrentUser = username === 'jason-zhxn'; // This matches your username from the HTML
+          
+          messages.push({
+            text,
+            sender: isCurrentUser ? 'user' : 'match',
+            timestamp
+          });
+        }
+      });
     }
-  
+
     // Bumble extraction
     if (currentUrl.includes('bumble.com')) {
-      const messageContainer = document.querySelector('.messages-container');
+      const messageContainer = document.querySelector('.messages-list__conversation');
       if (messageContainer) {
         const messageElements = messageContainer.querySelectorAll('.message');
         messageElements.forEach(msg => {
-          // Assuming messages sent by the user have a class like "message--sent"
-          const sender = msg.classList.contains('message--sent') ? 'user' : 'match';
-          let text = '';
-          const textElem = msg.querySelector('.message__text');
-          if (textElem) {
-            text = textElem.textContent.trim();
-          } else {
-            text = msg.textContent.trim();
+          // Messages with class 'message--out' are sent by the user
+          const isOutgoing = msg.classList.contains('message--out');
+          const textElement = msg.querySelector('.message-bubble__text');
+          if (textElement) {
+            const text = textElement.textContent.trim();
+            messages.push({
+              text: text,
+              sender: isOutgoing ? 'user' : 'match',
+              timestamp: new Date().toISOString() // Bumble doesn't show message timestamps in the HTML
+            });
           }
-          let timestamp = new Date().toISOString();
-          const timeElem = msg.querySelector('time');
-          if (timeElem) {
-            timestamp = timeElem.getAttribute('datetime') || timestamp;
-          }
-          messages.push({ text, sender, timestamp });
         });
       }
     }
@@ -102,7 +102,7 @@ function extractMessages() {
     });
   });
   
-  // Start observing the chat container for changes
+  // Start observing the chat container
   function startObserving() {
     const currentUrl = window.location.hostname;
     let chatContainer;
@@ -110,10 +110,11 @@ function extractMessages() {
     if (currentUrl.includes('tinder.com')) {
       chatContainer = document.querySelector('[role="log"]');
     } else if (currentUrl.includes('bumble.com')) {
-      chatContainer = document.querySelector('.messages-container');
+      chatContainer = document.querySelector('.messages-list__conversation');
     } else if (currentUrl.includes('messages.google.com')) {
-      // In this case, observe the main content area that holds the conversation list.
       chatContainer = document.querySelector('main.content-container');
+    } else if (currentUrl.includes('discord.com')) {
+      chatContainer = document.querySelector('.scrollerContent__36d07');
     }
   
     if (chatContainer) {

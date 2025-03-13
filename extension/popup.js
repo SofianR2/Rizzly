@@ -144,22 +144,68 @@ function formatPrompt(messages) {
     const context = contextInput.value.trim();
     const contextInfo = context ? `\nContext about them: ${context}` : '';
 
-    return `You're a modern dating coach helping craft messages for dating apps. Generate 3 engaging responses that are playful, confident, and authentic. 
-    Use modern texting style (casual, sometimes using lowercase, emojis where natural).
-    Follow these guidelines:
-    - MAKE IT AS HUMAN AS POSSIBLE, SO NOT TOO LONG OR CRINGE
-    - Keep it concise and punchy
-    - Show personality and humor, but don't overuse emojis
-    - Create intrigue and emotional spikes
-    - Match their energy level
-    - Use statements more than questions
-    - Reference details from their messages or profile
-    ${contextInfo}
-
-Here's the conversation:
-${conversation}
-
-Generate 3 different responses that are flirty and engaging. Each should have a different approach/vibe. Make them natural and authentic, avoiding anything creepy or overly aggressive. Format each response on its own line.`;
+    return `Given this text conversation and knowing that I'm talking to ${contextInfo}, 
+    Please analyze the conversation and provide 3 different possible responses to the latest message. 
+    
+    The responses should be:
+    1. A friendly and casual response
+    2. A funny and witty response
+    3. An empathetic and understanding response
+    
+    Make sure each response maintains appropriate tone and context for the conversation.
+    Be sure to reference details from their messages or the provided context.
+    
+    Additionally, follow these rules depending on the context of the conversation:
+    For General Conversation, refer to these rules from How to Win Friends and Influence People by Dale Carnegie:
+    Foster Positive Interactions:
+    Avoid criticism and negativity; use positive reinforcement to build trust and open communication.
+    Appreciate Sincerely:
+    Genuinely acknowledge others’ efforts to make them feel valued and boost self-esteem.
+    Align Interests:
+    Frame your requests in terms of benefits to them, creating mutual motivation and cooperation.
+    Cultivate Genuine Interest:
+    Show sincere curiosity about others’ needs and desires to form deeper connections.
+    Encourage Conversational Engagement:
+    Listen actively and invite others to share, building respect and understanding.
+    Avoid Confrontation:
+    Steer clear of arguments and respect differing opinions to maintain harmony.
+    Admit Mistakes:
+    Quickly acknowledge your errors to demonstrate honesty, humility, and build trust.
+    Begin with Positivity:
+    Start conversations on a positive note to ease future criticisms and foster collaboration.
+    Encourage and Praise:
+    Offer sincere, frequent praise to inspire growth and reinforce positive behavior.
+    Empower and Validate:
+    Make others feel that ideas are their own to boost commitment and creativity.
+    Dramatize Ideas:
+    Present ideas vividly to capture attention and make your message memorable.
+    Throw Down a Challenge:
+    Introduce challenges to ignite competitive energy and turn routine tasks into engaging opportunities
+    
+    For a more flirty or seductive context, refer to these rules from the Art of Seduction by Robert Greene:
+    Initiate Indirectly:
+    Start your conversation subtly. Let your interest emerge gradually rather than coming on too strong right away.
+    Maintain a Mysterious Aura:
+    Send playful, mixed signals that leave room for interpretation. A little mystery keeps your target curious and engaged.
+    Cultivate Desirability:
+    Hint that you’re sought after—mention, even subtly, that you’re admired by others. This not only builds your allure but also makes your attention feel special.
+    Ignite Curiosity and Temptation:
+    Tease with hints of exciting possibilities or experiences they might be missing out on, creating a subtle sense of need.
+    Master Subtle Insinuation:
+    Plant ideas with playful, indirect comments that let your target’s imagination fill in the gaps.
+    Mirror Their Spirit:
+    Adapt your tone and topics to resonate with their interests and moods, showing genuine understanding and empathy.
+    Keep the Conversation Unpredictable:
+    Avoid routine by varying your message style—introduce surprises and unexpected twists to maintain suspense.
+    Let Your Words Work Magic:
+    Choose evocative, emotionally charged language that blurs the lines between fantasy and reality, drawing them deeper into the conversation.
+    Balance Bold Moves with Gentle Withdrawal:
+    At the right moment, send a decisive, bold message to signal clear interest, then pull back slightly to let them miss you and keep the dynamic engaging.
+    
+    Here's the conversation:
+    ${conversation}
+    
+    Format each response on its own line.`;
 }
 
 // Generate suggestions using OpenAI

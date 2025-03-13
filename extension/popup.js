@@ -205,7 +205,7 @@ function formatPrompt(messages) {
     Here's the conversation:
     ${conversation}
     
-    Format each response on its own line.`;
+    Format each response on its own line. Do not include quotation marks around the actual message.`;
 }
 
 // Generate suggestions using OpenAI
@@ -240,7 +240,7 @@ async function generateSuggestions(messages) {
             .split('\n')
             .filter(s => s.trim())
             .map(s => s.replace(/^\d+\.\s*/, '')) // Remove leading numbers and dots
-            .map(s => s.trim().replace(/^["']+|["']+$/g, '')) // Remove surrounding quotes
+            .map(s => s.replace(/^["']|["']$/g, '').trim()) // Remove surrounding quotes
             .map(s => s.includes(':') ? s.split(':').slice(1).join(':').trim() : s); //Remove leading colon
     } catch (error) {
         console.error('API Error:', error);

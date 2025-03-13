@@ -267,7 +267,7 @@ function displaySuggestions(suggestions) {
                 
                 // Visual feedback
                 const originalText = button.textContent;
-                button.textContent = '✓ Copied!';
+                button.textContent = 'Copied!';
                 button.style.backgroundColor = '#4CAF50';
                 
                 // Reset button after 1.5 seconds
@@ -289,7 +289,7 @@ function displaySuggestions(suggestions) {
                     
                     // Visual feedback
                     const originalText = button.textContent;
-                    button.textContent = '✓ Copied!';
+                    button.textContent = 'Copied!';
                     button.style.backgroundColor = '#4CAF50';
                     
                     // Reset button after 1.5 seconds

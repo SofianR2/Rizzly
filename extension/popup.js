@@ -13,7 +13,7 @@ const OPENAI_API_KEY = 'sk-proj-Rzr6-fDe9eaQEiSF3GlHmx3GnKq3prRyxHJMM2oqb4Nc7h4S
 function formatMessages(messages) {
     return messages.map(msg => {
         const messageClass = msg.sender === 'user' ? 'user-message' : 'match-message';
-        return `<div class=${messageClass}>${msg.text}</div>`;
+        return `<div class="${messageClass}">${msg.text}</div>`;
     }).join('');
 }
 

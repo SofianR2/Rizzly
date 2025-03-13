@@ -205,7 +205,7 @@ function formatPrompt(messages) {
     Here's the conversation:
     ${conversation}
     
-    Format each response on its own line. Do not include quotation marks around the actual message.`;
+    Format each response on its own line.`;
 }
 
 // Generate suggestions using OpenAI

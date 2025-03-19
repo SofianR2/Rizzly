@@ -31,101 +31,150 @@ const style = document.createElement('style');
 style.textContent = `
     body {
         margin: 0;
-        padding: 10px;
-        min-width: 300px;
+        padding: 20px;
+        min-width: 500px;
+        min-height: 600px;
+        font-size: 16px;
+        background-color: #fff5f7;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    .title-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+    .title-container h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #333;
     }
     .suggestion {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px;
-        margin: 5px 0;
+        padding: 15px;
+        margin: 10px 0;
         border: 1px solid #e0e0e0;
-        border-radius: 4px;
+        border-radius: 8px;
         background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .suggestion-text {
         flex-grow: 1;
-        margin-right: 10px;
+        margin-right: 15px;
+        line-height: 1.5;
+        font-size: 15px;
     }
     .copy-button {
         background-color: #2196F3;
         color: white;
         border: none;
-        padding: 5px 15px;
-        border-radius: 4px;
+        padding: 8px 20px;
+        border-radius: 6px;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: all 0.2s;
+        font-size: 15px;
+        font-weight: 500;
     }
     .copy-button:hover {
         background-color: #1976D2;
+        transform: translateY(-1px);
     }
     .user-message {
         background-color: #e3f2fd;
-        padding: 8px 12px;
-        margin: 5px 0;
-        border-radius: 15px;
-        max-width: 80%;
+        padding: 12px 16px;
+        margin: 6px 0;
+        border-radius: 18px;
+        max-width: 85%;
         margin-left: auto;
         text-align: right;
+        font-size: 15px;
+        line-height: 1.4;
     }
     .match-message {
         background-color: #f5f5f5;
-        padding: 8px 12px;
-        margin: 5px 0;
-        border-radius: 15px;
-        max-width: 80%;
+        padding: 12px 16px;
+        margin: 6px 0;
+        border-radius: 18px;
+        max-width: 85%;
         margin-right: auto;
         text-align: left;
+        font-size: 15px;
+        line-height: 1.4;
     }
     #chatPreview {
         display: flex;
         flex-direction: column;
         gap: 8px;
-        padding: 10px;
-        min-height: 50px;
+        padding: 15px;
+        min-height: 40px;
         background-color: white;
-        border-radius: 4px;
+        border-radius: 8px;
+        margin-bottom: 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     #suggestionsDiv {
-        margin-top: 10px;
+        margin-top: 15px;
     }
     .context-container {
-        margin: 10px 0;
-        padding: 10px;
-        border-radius: 4px;
-        background-color: #f8f9fa;
+        margin: 12px 0;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .context-label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         font-weight: 500;
         color: #333;
+        font-size: 16px;
     }
     .context-input {
         width: 100%;
-        padding: 8px;
+        padding: 12px;
         border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 14px;
+        border-radius: 6px;
+        font-size: 15px;
         resize: vertical;
-        min-height: 60px;
+        min-height: 80px;
         box-sizing: border-box;
+        line-height: 1.5;
     }
     .context-input::placeholder {
         color: #999;
     }
     #loadingDiv {
         text-align: center;
-        padding: 10px;
+        padding: 15px;
+        font-size: 16px;
     }
     #errorDiv {
         color: #d32f2f;
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 4px;
+        padding: 12px;
+        margin: 8px 0;
+        border-radius: 6px;
         background-color: #ffebee;
         display: none;
+        font-size: 15px;
+    }
+    #generateBtn {
+        width: 100%;
+        padding: 12px;
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        margin-top: 15px;
+        transition: all 0.2s;
+    }
+    #generateBtn:hover {
+        background-color: #1976D2;
+        transform: translateY(-1px);
     }
 `;
 document.head.appendChild(style);
@@ -169,11 +218,11 @@ function formatPrompt(messages) {
     Foster Positive Interactions:
     Avoid criticism and negativity; use positive reinforcement to build trust and open communication.
     Appreciate Sincerely:
-    Genuinely acknowledge others’ efforts to make them feel valued and boost self-esteem.
+    Genuinely acknowledge others' efforts to make them feel valued and boost self-esteem.
     Align Interests:
     Frame your requests in terms of benefits to them, creating mutual motivation and cooperation.
     Cultivate Genuine Interest:
-    Show sincere curiosity about others’ needs and desires to form deeper connections.
+    Show sincere curiosity about others' needs and desires to form deeper connections.
     Encourage Conversational Engagement:
     Listen actively and invite others to share, building respect and understanding.
     Avoid Confrontation:
@@ -197,11 +246,11 @@ function formatPrompt(messages) {
     Maintain a Mysterious Aura:
     Send playful, mixed signals that leave room for interpretation. A little mystery keeps your target curious and engaged.
     Cultivate Desirability:
-    Hint that you’re sought after—mention, even subtly, that you’re admired by others. This not only builds your allure but also makes your attention feel special.
+    Hint that you're sought after—mention, even subtly, that you're admired by others. This not only builds your allure but also makes your attention feel special.
     Ignite Curiosity and Temptation:
     Tease with hints of exciting possibilities or experiences they might be missing out on, creating a subtle sense of need.
     Master Subtle Insinuation:
-    Plant ideas with playful, indirect comments that let your target’s imagination fill in the gaps.
+    Plant ideas with playful, indirect comments that let your target's imagination fill in the gaps.
     Mirror Their Spirit:
     Adapt your tone and topics to resonate with their interests and moods, showing genuine understanding and empathy.
     Keep the Conversation Unpredictable:
@@ -350,13 +399,10 @@ async function injectContentScript(tabId) {
     }
 }
 
-// Handle generate button click
-generateBtn.addEventListener('click', async () => {
+// Initialize popup and scrape conversation
+async function initializePopup() {
     loadingDiv.style.display = 'block';
     errorDiv.style.display = 'none';
-    
-    // Store the old suggestions HTML
-    const oldSuggestions = suggestionsDiv.innerHTML;
 
     try {
         // Get active tab
@@ -386,6 +432,47 @@ generateBtn.addEventListener('click', async () => {
 
         // Display chat preview
         chatPreview.innerHTML = formatMessages(response.messages);
+    } catch (error) {
+        console.error('Error:', error);
+        showError(error.message);
+    } finally {
+        loadingDiv.style.display = 'none';
+    }
+}
+
+// Handle generate button click - now handles suggestion generation
+generateBtn.addEventListener('click', async () => {
+    loadingDiv.style.display = 'block';
+    errorDiv.style.display = 'none';
+    
+    // Store the old suggestions HTML
+    const oldSuggestions = suggestionsDiv.innerHTML;
+
+    try {
+        // Get active tab
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        
+        // Check if we're on a supported site
+        const isSupported = await checkCurrentTab();
+        if (!isSupported) {
+            throw new Error('Please open a conversation on Tinder, Bumble, Hinge, or Discord before generating suggestions.');
+        }
+
+        // Get messages from content script
+        let response;
+        try {
+            response = await chrome.tabs.sendMessage(tab.id, { action: 'getMessages' });
+        } catch (error) {
+            console.error('Message error:', error);
+            throw new Error('Could not connect to the dating app page. Please refresh the page and try again.');
+        }
+        
+        if (!response || !response.messages || response.messages.length === 0) {
+            throw new Error('No messages found. Make sure you have an active conversation open.');
+        }
+
+        // Display chat preview
+        chatPreview.innerHTML = formatMessages(response.messages);
 
         // Generate and display suggestions
         const suggestions = await generateSuggestions(response.messages);
@@ -399,6 +486,9 @@ generateBtn.addEventListener('click', async () => {
         loadingDiv.style.display = 'none';
     }
 });
+
+// Initialize popup when it loads
+document.addEventListener('DOMContentLoaded', initializePopup);
 
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

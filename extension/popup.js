@@ -7,7 +7,16 @@ const generateBtn = document.getElementById('generateBtn');
 
 // OpenAI API configuration
 const OPENAI_API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
-const OPENAI_API_KEY = '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';
+
+// Function to load the API key from api_key.txt
+async function getAPIKey() {
+    const url = chrome.runtime.getURL('api_key.txt');
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error('Failed to load API key');
+    }
+    return response.text().then(key => key.trim());
+}
 
 // Format messages for display
 function formatMessages(messages) {
@@ -211,11 +220,12 @@ function formatPrompt(messages) {
 // Generate suggestions using OpenAI
 async function generateSuggestions(messages) {
     try {
+        const apiKey = await getAPIKey();
         const response = await fetch(OPENAI_API_ENDPOINT, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
+                'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
                 model: 'gpt-4',
@@ -240,7 +250,7 @@ async function generateSuggestions(messages) {
             .split('\n')
             .filter(s => s.trim())
             .map(s => s.replace(/^\d+\.\s*/, '')) // Remove leading numbers and dots
-            .map(s => s.includes(':') ? s.split(':').slice(1).join(':').trim() : s) //Remove leading colon
+            .map(s => s.includes(':') ? s.split(':').slice(1).join(':').trim() : s) // Remove leading colon
             .map(s => s.replace(/^["']|["']$/g, '').trim()); // Remove surrounding quotes
     } catch (error) {
         console.error('API Error:', error);
